@@ -1,0 +1,34 @@
+services:
+  evolution-api:
+    # Note: the old "atendai/evolution-api" image is no longer pullable from Docker Hub.
+    image: evoapicloud/evolution-api:v2.3.7
+    container_name: evolution_api
+    restart: always
+    ports:
+      # Bound to localhost only; the host's nginx is the single public entry point.
+      - "127.0.0.1:8080:8080"
+    env_file: .env
+    volumes:
+      - evolution_instances:/evolution/instances
+    depends_on:
+      - redis
+    networks:
+      - evolution-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: evolution_redis
+    restart: always
+    command: redis-server --appendonly yes
+    volumes:
+      - evolution_redis:/data
+    networks:
+      - evolution-net
+
+volumes:
+  evolution_instances:   # WhatsApp sessions - back this up
+  evolution_redis:
+
+networks:
+  evolution-net:
+    driver: bridge
