@@ -1,1 +1,6 @@
 * text=auto eol=lf
+
+# Show the actual content in GitHub's Languages bar
+nginx/*.conf        linguist-language=Nginx linguist-detectable
+sql/*.sql           linguist-detectable
+docker-compose.yml  linguist-detectable
